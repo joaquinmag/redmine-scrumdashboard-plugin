@@ -20,10 +20,10 @@
       <% if @dashboard.maintrackers.include?(t) %>
         <%= hidden_field_tag('old_tracker_ids[]', t.id) -%>
       <% end %>
-      <% test_id = 'test['+t.id.to_s+']' %>
-      <% color_id = 'color['+t.id.to_s+']' %>
-      <% bgcolor_id = 'bgcolor['+t.id.to_s+']' %>
-      <% textcolor_id = 'textcolor['+t.id.to_s+']' %>
+      <% test_id = sanitize_to_id('test['+t.id.to_s+']') %>
+      <% color_id = sanitize_to_id('color['+t.id.to_s+']') %>
+      <% bgcolor_id = sanitize_to_id('bgcolor['+t.id.to_s+']') %>
+      <% textcolor_id = sanitize_to_id('textcolor['+t.id.to_s+']') %>
       <% disabled = !@project_trackers.include?(t) %>
       <tr>
       <td>
