@@ -20,6 +20,8 @@
       <% if @dashboard.maintrackers.include?(t) %>
         <%= hidden_field_tag('old_tracker_ids[]', t.id) -%>
       <% end %>
+      <% bgcolor_name = 'bgcolor['+t.id.to_s+']' %>
+      <% textcolor_name = 'textcolor['+t.id.to_s+']' %>
       <% test_id = sanitize_to_id('test['+t.id.to_s+']') %>
       <% color_id = sanitize_to_id('color['+t.id.to_s+']') %>
       <% bgcolor_id = sanitize_to_id('bgcolor['+t.id.to_s+']') %>
@@ -76,12 +78,12 @@
       </td>
       <td>
       <% bgcolor = tracker ? tracker.bgcolor : "" %>
-      <%= text_field_tag(bgcolor_id, bgcolor, :disabled => disabled, 
+      <%= text_field_tag(bgcolor_name, bgcolor, :disabled => disabled, 
                 :onblur => 'document.getElementById("'+test_id+'").style.backgroundColor = this.value') -%>
       </td>
       <td>
       <% textcolor = tracker ? tracker.textcolor : "" %>
-      <%= text_field_tag(textcolor_id, textcolor, :disabled => disabled, 
+      <%= text_field_tag(textcolor_name, textcolor, :disabled => disabled, 
                 :onblur => 'document.getElementById("'+test_id+'").style.color = this.value') -%>
       </td>
       <td id='<%= test_id -%>' name='test' style='border: 1px solid #999;background-color:
