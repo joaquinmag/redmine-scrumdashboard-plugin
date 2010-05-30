@@ -24,6 +24,8 @@ div.db_issue
     border: 1px solid #999;
     float: left;
     overflow: hidden;
+    padding-left: 2px;
+    font-size: 8pt;
 }
 
 #tooltip {

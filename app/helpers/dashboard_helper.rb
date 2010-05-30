@@ -48,7 +48,7 @@ module DashboardHelper
     dbtracker = DashboardTracker.find(:first, 
       :conditions => ["dashboard_id = ? AND tracker_id = ?",dashboard.id,issue.tracker.id])
     divclass = draggable ? " draggable" : ""
-    html = "<div class='db_issue#{divclass}' style='background-color:#{dbtracker.bgcolor}' 
+    html = "<div class='db_issue#{divclass}' style='background-color: white; border-left: 6px solid #{dbtracker.bgcolor};' 
       id='issue-#{parent_id}-#{issue.id}-#{col}-#{filter}'"
     # Display tooltip.
     html += "onmouseover='tooltip(\"" +
@@ -60,7 +60,7 @@ module DashboardHelper
       "<b>#{l(:field_assigned_to)}:</b> #{issue.assigned_to}<br/>" +
       "<b>#{l(:field_priority)}:</b> #{issue.priority.name}" +
       "\");' onmouseout='closetooltip();'>"
-    html += link_to("##{issue.id}: #{issue.subject}", {:controller => 'issues', 
+    html += link_to("#<strong>#{issue.id}</strong>: #{issue.subject}", {:controller => 'issues', 
       :action => 'show', :id => issue}, {"style" => "color:#{dbtracker.textcolor}", "onmousedown" => "wasdragged = false;", 
       "onmouseup" => "if(wasdragged){this.href='javascript:void(0)';}"})
     html += "</div>"
