@@ -5,12 +5,12 @@
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -19,7 +19,7 @@ module DashboardHelper
 
   def draw_columns(issuestatuses, sort = nil, reverse = nil)
     columnlength = 99 / issuestatuses.length
-    columnlength = columnlength >= 16.5 ? 16.5 : columnlength
+    columnlength = columnlength >= Dashboard::COL_MAX_LENGTH ? Dashboard::COL_MAX_LENGTH : columnlength
     i = 0
     html = ""
     issuestatuses.each do |status|
@@ -30,7 +30,7 @@ module DashboardHelper
       url_options[:sort] = status.id
       if sort == status.id.to_s && reverse == 0 then url_options[:reverse] = 1
       else url_options[:reverse] = 0 end
-      html += "'>#{link_to_remote(status, {:update => 'dashboard', :url => url_options}, 
+      html += "'>#{link_to_remote(status, {:update => 'dashboard', :url => url_options},
         {:href => 'javascript:void(0)', :title => l(:label_sort_by, "#{status}")})}"
       if sort == status.id.to_s
         if reverse == 0 then html += " #{image_tag('sort_desc.png')}"
@@ -45,10 +45,10 @@ module DashboardHelper
   def draw_issue(issue, parent_id, maintrackers, col, dashboard, filter)
     allowed_statuses = issue.new_statuses_allowed_to(User.current) & dashboard.project_statuses - [issue.status]
     draggable = allowed_statuses.length > 0
-    dbtracker = DashboardTracker.find(:first, 
+    dbtracker = DashboardTracker.find(:first,
       :conditions => ["dashboard_id = ? AND tracker_id = ?",dashboard.id,issue.tracker.id])
     divclass = draggable ? " draggable" : ""
-    html = "<div class='db_issue#{divclass}' style='background-color: white; border-left: 6px solid #{dbtracker.bgcolor};' 
+    html = "<div class='db_issue#{divclass}' style='background-color: white; border-left: 6px solid #{dbtracker.bgcolor}; width: #{Dashboard::ISSUE_WIDTH}%; height: #{Dashboard::LINE_HEIGHT-10}px'
       id='issue-#{parent_id}-#{issue.id}-#{col}-#{filter}'"
     # Display tooltip.
     html += "onmouseover='tooltip(\"" +
@@ -60,8 +60,8 @@ module DashboardHelper
       "<b>#{l(:field_assigned_to)}:</b> #{issue.assigned_to}<br/>" +
       "<b>#{l(:field_priority)}:</b> #{issue.priority.name}" +
       "\");' onmouseout='closetooltip();'>"
-    html += link_to("#<strong>#{issue.id}</strong>: #{issue.subject}", {:controller => 'issues', 
-      :action => 'show', :id => issue}, {"style" => "color:#{dbtracker.textcolor}", "onmousedown" => "wasdragged = false;", 
+    html += link_to("#<strong>#{issue.id}</strong>: #{issue.subject}", {:controller => 'issues',
+      :action => 'show', :id => issue}, {"style" => "color:#{dbtracker.textcolor}", "onmousedown" => "wasdragged = false;",
       "onmouseup" => "if(wasdragged){this.href='javascript:void(0)';}"})
     html += "</div>"
     if draggable then html += draggable_element("issue-#{parent_id}-#{issue.id.to_s}-#{col}-#{filter}", :revert => true) end
@@ -79,7 +79,7 @@ module DashboardHelper
     html_end = "</div>"
     html_end += drop_receiving_element "drop-#{issue.id.to_s}-#{column.status.id.to_s}",
       :url => { :action => "update", :where => column.status.id.to_s, :drop => issue.id.to_s,
-      :version => @version }, 
+      :version => @version },
       :hoverclass => "hover",
       :before => "Element.hide(element)"
     html = ""
@@ -96,7 +96,7 @@ module DashboardHelper
     html_start = "<div class='frame' style='clear:both;' id='frame-#{issue.id}'>"
     html_end = "</div>"
     html = html_start + capture(&block) + html_end
-    concat(html, block.binding)
+    concat(html)
   end
 
   def add_observer
@@ -104,13 +104,13 @@ module DashboardHelper
       onStart: function(eventName, draggable, event) {
         var content = draggable.element.id;
         var url = '/dashboard/visualise_workflow?do=true&issue='+encodeURIComponent(content);
-        new Ajax.Request(url, { asynchronous:true, evalScripts:true, method:'get' }); 
+        new Ajax.Request(url, { asynchronous:true, evalScripts:true, method:'get' });
       },
       onDrag: function(eventName, draggable, event) { closetooltip(); wasdragged = true; },
       onEnd: function(eventName, draggable, event) {
         var content = draggable.element.id;
         var url = '/dashboard/visualise_workflow?issue='+encodeURIComponent(content);
-        new Ajax.Request(url, { asynchronous:true, evalScripts:true, method:'get' });      
+        new Ajax.Request(url, { asynchronous:true, evalScripts:true, method:'get' });
       }
     });"
   end

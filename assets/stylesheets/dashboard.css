@@ -19,8 +19,8 @@ div.db_issue
     margin-top: 4px;
     margin-left: 2%;
     margin-right: 2%;
-    width: 44%;
-    height: 45px;
+    /*width: 65%;
+    min-height: 65px;*/
     border: 1px solid #999;
     float: left;
     overflow: hidden;
