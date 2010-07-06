@@ -69,7 +69,7 @@ class DashboardController < ApplicationController
     column = swimline.column_by_status(requested_status)
 
     render :update do |page|
-      height = swimline.height(filter) * 55
+      height = swimline.height(filter) * dashboard.line_height
       last = column.status == dashboard.project_statuses.last
       # Remove the issue from the dashboard and draw it to the new status.
       page.replace params[:id], ""
@@ -158,6 +158,14 @@ class DashboardController < ApplicationController
           end
         end
       end
+    end
+
+    if params[:change] = "Visualization"
+      @dashboard.issue_width = params[:issue_width]
+      @dashboard.line_height = params[:line_height]
+      @dashboard.col_max_width = params[:col_max_width]
+      @dashboard.visualization = params[:visualization]
+      @dashboard.save
     end
 
     flash[:notice] = l(:notice_successful_update)

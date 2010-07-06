@@ -17,10 +17,6 @@
 
 class Dashboard < ActiveRecord::Base
 
-  ISSUE_WIDTH = 65
-  LINE_HEIGHT = 75
-  COL_MAX_LENGTH = 20
-
   belongs_to :project
   
   has_many :dashboard_trackers

@@ -1,8 +1,8 @@
 <% if @filter != "mine" || @dashboard.issues_in_version_assigned_to(User.current, @version).length > 0 %>
   <% colLength = 99 / @issuestatuses.length %>
-  <% colLength = colLength >= Dashboard::COL_MAX_LENGTH ? Dashboard::COL_MAX_LENGTH : colLength %>
+  <% colLength = colLength >= @dashboard.col_max_width ? @dashboard.col_max_width : colLength %>
   <p>
-  <%= draw_columns(@issuestatuses, @sort, @reverse) %>
+  <%= draw_columns(@issuestatuses, @dashboard.col_max_width , @sort, @reverse) %>
 
   <% col = 1 %>
   <% @swimlines.each do |swimline| %>
@@ -13,7 +13,7 @@
         <% swimline.columns.each do |c| %>
           <% last = true unless i != swimline.columns.length - 1 %>
           <% i += 1 %>
-          <%= draw_content(c, col, colLength, swimline.height(@filter) * Dashboard::LINE_HEIGHT, @dashboard.maintrackers, last, @filter) %>
+          <%= draw_content(c, col, colLength, swimline.height(@filter) * @dashboard.line_height, @dashboard.maintrackers, last, @filter) %>
         <% end %>
       <% end %>
     <% end %>

@@ -17,9 +17,9 @@
 
 module DashboardHelper
 
-  def draw_columns(issuestatuses, sort = nil, reverse = nil)
+  def draw_columns(issuestatuses, col_max_length, sort = nil, reverse = nil)
     columnlength = 99 / issuestatuses.length
-    columnlength = columnlength >= Dashboard::COL_MAX_LENGTH ? Dashboard::COL_MAX_LENGTH : columnlength
+    columnlength = columnlength >= col_max_length ? col_max_length : columnlength
     i = 0
     html = ""
     issuestatuses.each do |status|
@@ -48,7 +48,7 @@ module DashboardHelper
     dbtracker = DashboardTracker.find(:first,
       :conditions => ["dashboard_id = ? AND tracker_id = ?",dashboard.id,issue.tracker.id])
     divclass = draggable ? " draggable" : ""
-    html = "<div class='db_issue#{divclass}' style='background-color: white; border-left: 6px solid #{dbtracker.bgcolor}; width: #{Dashboard::ISSUE_WIDTH}%; height: #{Dashboard::LINE_HEIGHT-10}px'
+    html = "<div class='db_issue#{divclass}' style='background-color: white; border-left: 6px solid #{dbtracker.bgcolor}; width: #{dashboard.issue_width}%; height: #{dashboard.line_height-10}px'
       id='issue-#{parent_id}-#{issue.id}-#{col}-#{filter}'"
     # Display tooltip.
     html += "onmouseover='tooltip(\"" +
@@ -118,6 +118,7 @@ module DashboardHelper
   def administration_settings_tabs
     tabs = [{:name => 'Tracker', :partial => 'tracker', :label => 'label_tracker'},
             {:name => 'Status', :partial => 'status', :label => 'label_dashboard_status'},
+            {:name => 'Visualization', :partial => 'visualization', :label => 'label_dashboard_visualization'},
             ]
   end
 
