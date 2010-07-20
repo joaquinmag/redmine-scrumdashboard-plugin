@@ -160,14 +160,6 @@ class DashboardController < ApplicationController
       end
     end
 
-    if params[:change] = "Visualization"
-      @dashboard.issue_width = params[:issue_width]
-      @dashboard.line_height = params[:line_height]
-      @dashboard.col_max_width = params[:col_max_width]
-      @dashboard.visualization = params[:visualization]
-      @dashboard.save
-    end
-
     flash[:notice] = l(:notice_successful_update)
     redirect_to :action => 'settings', :id => @dashboard.project, :tab => params[:change], :version => params[:version]
   end
