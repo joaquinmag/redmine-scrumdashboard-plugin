@@ -21,12 +21,7 @@ class Dashboard < ActiveRecord::Base
   
   has_many :dashboard_trackers
   has_many :dashboard_statuses
-  
-  #attr_accessor :issue_width
-  #attr_accessor :line_height
-  #attr_accessor :col_max_width
-  #attr_accessor :visualization
-  
+    
   def swimlines(version, sort = nil, filter = nil)
     maintrackers = self.maintrackers
     if !version then return nil end
