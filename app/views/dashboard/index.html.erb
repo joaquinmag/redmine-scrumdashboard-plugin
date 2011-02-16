@@ -68,11 +68,23 @@
         :action => "settings", :id => @project.identifier} -%>
     </p>
   <% else %>
-    <p class="nodata"><%= l(:label_no_data) %></p>
+    <p> class="nodata"><%= l(:label_no_data) %>
+    
+   <% end %>
+  </p>
+  
   <% end %>
 
 <% else %>
   <h2><%= l(:label_dashboard) -%></h2>
   <p class="nodata"><%= l(:label_no_data) %></p>
-<% end %>
-</p>
+
+    <!-- Consulto si la version es nil, si es asi, le indico al usuario que cree una version -->
+     
+     <% if @version.nil? %>
+        <br/>
+            Verificar que el proyecto tenga una versi&oacute;n definida
+      <% end %>
+    </p>
+  <% end %>
+</p>   
