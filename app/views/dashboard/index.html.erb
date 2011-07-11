@@ -50,7 +50,7 @@
     <% if User.current.allowed_to?(:edit_dashboard, @project, :global => true) %>
       <p class="nodata">
         <%= link_to l(:dashboard_set_maintracker), { 
-          :action => "settings", :id => @project.identifier, :version => @version.id} -%>
+          :action => "settings", :id => @project.identifier} -%>
       </p>
     <% else %>
       <p class="nodata"><%= l(:label_no_data) %></p>
@@ -65,7 +65,7 @@
   <% if User.current.allowed_to?(:edit_dashboard, @project, :global => true) %>
     <p class="nodata">
       <%= link_to l(:dashboard_set_maintracker), { 
-        :action => "settings", :id => @project.identifier, :version => @version.id} -%>
+        :action => "settings", :id => @project.identifier} -%>
     </p>
   <% else %>
     <p class="nodata"><%= l(:label_no_data) %></p>
